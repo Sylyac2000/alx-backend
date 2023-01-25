@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" BasicCache module
+""" FIFOCache module
 """
 
 BaseCaching = __import__('base_caching').BaseCaching
@@ -9,6 +9,9 @@ class FIFOCache(BaseCaching):
     """ FIFOCache inherits from BaseCaching :
       - is a caching system
     """
+
+    def __init__(self):
+        super().__init__()
 
     def put(self, key, item):
         """ Add an item in the cache
