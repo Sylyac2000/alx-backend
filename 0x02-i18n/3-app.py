@@ -13,22 +13,21 @@ class Config(object):
 
 
 app = Flask(__name__)
-
-# Load babel
 app.config.from_object(Config)
-
-
-def get_locale():
-    """ Get locale from request"""
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
-
-
 babel = Babel(app)
 
 
-@app.route('/')
-def index():
-    """ view function to load 1-index.html"""
+@babel.localeselector
+def get_locale():
+    """
+    Select and return best language match based on supported languages
+    """
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+@app.route('/', strict_slashes=False)
+def index() -> str:
+    """ view to Handles /"""
     return render_template('3-index.html')
 
 
