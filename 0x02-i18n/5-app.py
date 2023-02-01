@@ -45,7 +45,7 @@ def get_user():
 
 
 @app.before_request
-def before_request():
+def before_request() -> None :
     """
     Add user to flask.g if user is found
     """
