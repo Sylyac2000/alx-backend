@@ -2,14 +2,13 @@
 """
 Flask app
 """
-from typing import Union, Dict
 from flask import (
     Flask,
     render_template,
     request,
     g
 )
-from flask_babel import Babel, _
+from flask_babel import Babel
 
 
 users = {
@@ -34,9 +33,10 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
-def get_user() -> Union[Dict, None]:
+def get_user():
     """
     Returns a user dictionary or None if ID value can't be found
+    or if 'login_as' URL parameter was not found
     """
     id = request.args.get('login_as', None)
     if id is not None and int(id) in users.keys():
@@ -45,7 +45,7 @@ def get_user() -> Union[Dict, None]:
 
 
 @app.before_request
-def before_request() -> None:
+def before_request():
     """
     Add user to flask.g if user is found
     """
@@ -58,9 +58,9 @@ def get_locale():
     """
     Select and return best language match based on supported languages
     """
-    locale = request.args.get('locale', None)
-    if locale and locale in app.config['LANGUAGES']:
-        return locale
+    loc = request.args.get('locale')
+    if loc in app.config['LANGUAGES']:
+        return loc
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
